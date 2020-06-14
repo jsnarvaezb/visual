@@ -45,6 +45,7 @@ void setup() {
   img = loadImage("gohan.jpg");
   img.resize(375, 532);
   convolution = loadShader("conv-frag.glsl");
+  convolution.set("renderSize", float(375), float(532));
 }
 
 void draw() {

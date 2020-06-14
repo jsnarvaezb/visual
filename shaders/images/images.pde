@@ -46,7 +46,7 @@ void setup() {
   img = loadImage("big_eyes.png");
   //img.resize(375, 532);
   convolution = loadShader("conv-frag.glsl");
-  convolution.set("renderSize", float(375), float(532));
+  convolution.set("renderSize", float(img.width), float(img.height));
   grayLuma = loadShader("luma-frag.glsl");
   grayMean = loadShader("gray-mean-frag.glsl");
   identity_button = new Button("Identity", 10, 350, 100, 35);
@@ -79,9 +79,6 @@ void draw() {
     setMask(convolution, mask);
   }
   createShape(img, img.width, img.height, img.width+5, 0);
-  fill(0);
-  text("Mask of convolution", 70 , 330);
-  text("Filters", 30, 480);
 }
 
 PShape createShape(PImage img, int x, int y, int x_start, int y_start) {

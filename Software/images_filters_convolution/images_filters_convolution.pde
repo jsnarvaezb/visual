@@ -119,7 +119,7 @@ void filters(){
       pg.pixels[i] = color(int((red+green+blue)/3));
     }
     if(filter=="luma"){
-      pg.pixels[i] = color((0.6126 * red) + (0.7952 *green) + (0.6992 * blue));
+      pg.pixels[i] = color((0.2989 * red) + (0.5870 *green) + (0.1140 * blue));
     }
   }
 }
@@ -127,13 +127,13 @@ void filters(){
 void fn_histogram(){
   // Adaptado de https://processing.org/examples/histogram.html
   int[] hist = new int[256];
-  for (int i = 0; i <= pg.width; i++) {
-    for (int j = 0; j <= pg.height; j++) {
+  for (int i = 0; i <= pg.width+1; i++) {
+    for (int j = 0; j <= pg.height+1; j++) {
       int bright = int(brightness(pg.get(i, j)));
       hist[bright]++; 
     }
   }
-  for (int i = 0; i < pg.width; i += 2) {
+  for (int i = 0; i < pg.width+1; i += 1) {
     // Map i (from 0..img.width) to a location in the histogram (0..255)
     int which = int(map(i, 0, pg.width, 0, 255));
     // Convert the histogram value to a location between 

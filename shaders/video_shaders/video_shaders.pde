@@ -36,7 +36,7 @@ char[] ascii;
 PShader convolution, grayLuma, grayMean, shader;
 
 void setup() {
-  size(1030, 500, P3D);
+  size(1030, 500, P2D);
   frameRate(30);
   textSize(12);
   background(255);
@@ -44,9 +44,10 @@ void setup() {
   copy_video = new Movie(this,"homero.mov");
   original_video.loop();
   copy_video.loop();
-  pg = createGraphics(504,239, P3D);
+  pg = createGraphics(504,239, P2D);
   
   convolution = loadShader("conv-frag.glsl");
+  convolution.set("renderSize", float(copy_video.width), float(copy_video.height));
   grayLuma = loadShader("luma-frag.glsl");
   grayMean = loadShader("gray-mean-frag.glsl");
   

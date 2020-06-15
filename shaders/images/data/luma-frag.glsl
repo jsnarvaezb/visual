@@ -11,7 +11,7 @@ precision mediump float;
 uniform sampler2D texture;
 varying vec4 vertTexCoord;
 
-#define LUMA_VALUES vec3(0.6126, 0.7952, 0.6992)
+#define LUMA_VALUES vec3(0.2989, 0.5870, 0.1140)
 
 void main() {
   vec4 color = texture2D(texture, vertTexCoord.st);

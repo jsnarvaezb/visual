@@ -3,10 +3,7 @@
 *   Computacion Visual 2020 - I
 *     
 *   Programa que aplica varias mascaras de convolucion a una imagen
-*   y las muestra en el siguiente orden:
 *   
-*   Original -   Sharpen    - Edge
-*   BoxBlur  - GaussianBlur - Identity
 */
 
 PImage img;
@@ -42,9 +39,9 @@ boolean is_ascii= false;
 boolean is_filter = false;
    
 void setup() {
-  size(1030, 500, P2D);
+  size(1082, 500, P2D);
   img = loadImage("big_eyes.png");
-  //img.resize(375, 532);
+  textSize(12);
   convolution = loadShader("conv-frag.glsl");
   convolution.set("renderSize", float(img.width), float(img.height));
   grayLuma = loadShader("luma-frag.glsl");
@@ -54,17 +51,21 @@ void setup() {
   sharpen_button = new Button("Sharpen", 240, 350, 100, 35);
   edge_detection_button = new Button("Edge detection", 350, 350, 150, 35);
   gaussian_blur_button = new Button("Gaussian blur", 510, 350, 150, 35);
-  grayscale_button = new Button("Grayscale", 10, 450, 100, 35);
-  luma_button = new Button("Luma", 120, 450, 100, 35);
-  ascii_button = new Button("Ascii", 230, 450, 100, 35);
+  grayscale_button = new Button("Grayscale", 10, 440, 100, 35);
+  luma_button = new Button("Luma", 120, 440, 100, 35);
+  ascii_button = new Button("Ascii", 230, 440, 100, 35);
   fill(0);
   stroke(0);
 }
 
 void draw() {
-  background(255);
+  background(255); 
   resetShader();
-  createShape(img, img.width, img.height, 0, 0);
+  fill(0);
+  stroke(0);
+  text("Mask of convolution", 70 , 330);
+  text("Filters", 30, 420);
+  
   blur_button.Draw();
   identity_button.Draw();
   sharpen_button.Draw();
@@ -73,6 +74,9 @@ void draw() {
   grayscale_button.Draw();
   luma_button.Draw();
   ascii_button.Draw();
+  
+  createShape(img, img.width, img.height, 0, 0);
+  
   if(is_filter && filter != "ascii"){
     shader(shader);
   }else{
@@ -97,9 +101,6 @@ void setMask(PShader shader, float[] mask) {
   shader(shader);
   shader.set("mask", mask);
 }
-
-
-
 
 void mousePressed()
 {

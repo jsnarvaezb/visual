@@ -16,10 +16,6 @@ varying vec4 vertTexCoord;
 
 #define GRAY_VALUES vec3(0.299, 0.587, 0.114)
 
-float module(float x, float y) {
-    return x - float(y);
-}
-
 void main() {
   int tilesX = int(params[0]);
   float tileW = int(params[1]);
@@ -38,8 +34,8 @@ void main() {
     esperado.
   */
   
-  float char_x = module(coord.x, tilesX) * tileW;
-  float char_y = -module(coord.y, tilesY) * tileH;
+  float char_x = mod(coord.x, tilesX) * tileW;
+  float char_y = -mod(coord.y, tilesY) * tileH;
   float eq_x = float(tileW/int(tileW * numChars));
   
   vec2 charCoords = vec2( int(gray * eq_x) + int(char_x * eq_x), char_y );  

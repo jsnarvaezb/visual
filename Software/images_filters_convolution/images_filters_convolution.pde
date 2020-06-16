@@ -72,6 +72,7 @@ void draw() {
     text("Histogram", 570 , 330);
   }
   image(original_img,6, 10);
+  
   blur_button.Draw();
   identity_button.Draw();
   sharpen_button.Draw();
@@ -100,12 +101,9 @@ void convolution() {
           btotal += blue(original_img.pixels[pos]) * matrix[ky+1][kx+1];
         }
       }
-      rtotal = constrain(rtotal, 0, 255);
-      gtotal = constrain(gtotal, 0, 255);
-      btotal = constrain(btotal, 0, 255);
       color c = color(rtotal,gtotal,btotal);
-      int loc = x + y*original_img.width;
-      pg.pixels[loc] = c;
+      int i = x + y*original_img.width;
+      pg.pixels[i] = c;
     }
   }
 }

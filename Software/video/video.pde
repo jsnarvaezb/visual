@@ -111,12 +111,9 @@ void convolution() {
           btotal += blue(original_video.pixels[pos]) * matrix[ky+1][kx+1];
         }
       }
-      rtotal = constrain(rtotal, 0, 255);
-      gtotal = constrain(gtotal, 0, 255);
-      btotal = constrain(btotal, 0, 255);
       color c = color(rtotal,gtotal,btotal);
-      int loc = x + y*original_video.width;
-      pg.pixels[loc] = c;
+      int i = x + y*original_video.width;
+      pg.pixels[i] = c;
     }
   }
 }
@@ -130,7 +127,7 @@ void filters(){
       pg.pixels[i] = color(int((red+green+blue)/3));
     }
     if(filter=="luma"){
-      pg.pixels[i] = color((0.6126 * red) + (0.7952 *green) + (0.6992 * blue));
+      pg.pixels[i] = color((0.2989 * red) + (0.5870 *green) + (0.1140 * blue));
     }
   }
 }
@@ -147,7 +144,6 @@ void fn_ascii(){
   }
   for (int y = 5; y <original_video.height-5; y += resolution) {
     for (int x = 5; x < original_video.width-5; x += resolution) {
-      //color pixel = pg.pixels[y * pg.width + x];
       int index = (x + y * pg.width);
       float r = red(pg.pixels[index + 0]);
       float g = green(pg.pixels[index + 1]);

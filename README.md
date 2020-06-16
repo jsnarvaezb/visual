@@ -1,4 +1,4 @@
-#Computación visual
+# Computación visual
 
 ## Taller 1
 

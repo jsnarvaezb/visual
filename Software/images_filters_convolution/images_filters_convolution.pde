@@ -33,10 +33,11 @@ char[] ascii;
 
 void setup() {
   size(1082, 700);
-  textSize(12);
   original_img = loadImage("big_eyes.png");
   copy_img = loadImage("big_eyes.png");
-  pg = createGraphics(original_img.width,original_img.height);
+  pg = createGraphics(original_img.width, original_img.height);
+  
+  // Buttons
   identity_button = new Button("Identity", 10, 350, 100, 35);
   blur_button = new Button("Blur", 120, 350, 110, 35);
   sharpen_button = new Button("Sharpen", 240, 350, 100, 35);
@@ -44,16 +45,23 @@ void setup() {
   gaussian_blur_button = new Button("Gaussian blur", 10, 400, 150, 35);
   grayscale_button = new Button("Grayscale", 10, 500, 100, 35);
   luma_button = new Button("Luma", 120, 500, 100, 35);
-  ascii_button = new Button("Ascii", 230, 500, 100, 35);
-  fill(0);
-  stroke(0);
-  
+  ascii_button = new Button("Ascii", 230, 500, 100, 35);  
 }
 
 void draw() {
   background(255);
+  textSize(12);
   text("Mask of convolution", 70 , 330);
   text("Filters", 30, 480);
+  blur_button.Draw();
+  identity_button.Draw();
+  sharpen_button.Draw();
+  edge_detection_button.Draw();
+  gaussian_blur_button.Draw();
+  grayscale_button.Draw();
+  luma_button.Draw();
+  ascii_button.Draw();
+  
   pg.beginDraw();
   pg.image(copy_img,0,0);
   pg.loadPixels();
@@ -72,15 +80,6 @@ void draw() {
     text("Histogram", 570 , 330);
   }
   image(original_img,6, 10);
-  
-  blur_button.Draw();
-  identity_button.Draw();
-  sharpen_button.Draw();
-  edge_detection_button.Draw();
-  gaussian_blur_button.Draw();
-  grayscale_button.Draw();
-  luma_button.Draw();
-  ascii_button.Draw();
 }
 
 void convolution() { 
@@ -146,17 +145,15 @@ void fn_ascii(){
   pg.beginDraw();
   pg.image(copy_img,0,0);
   pg.loadPixels();
-  int resolution = 7;
-  textSize(12); 
+  textSize(6); 
   ascii = new char[256];
   String letters = "@&%#*vi<>+=^;,:'. ";
   for (int i = 0; i < 256; i++) {
     int index = int(map(i, 0, 256, 0, letters.length()));
     ascii[i] = letters.charAt(index);
   }
-  for (int y = 5; y <original_img.height-5; y += resolution) {
-    for (int x = 5; x < original_img.width-5; x += resolution) {
-      //color pixel = pg.pixels[y * pg.width + x];
+  for (int y = 5; y <original_img.height-5; y += 4) {
+    for (int x = 5; x < original_img.width-5; x += 4) {
       int index = (x + y * pg.width);
       float r = red(pg.pixels[index + 0]);
       float g = green(pg.pixels[index + 1]);

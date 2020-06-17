@@ -2,7 +2,7 @@ import processing.video.*;
 
 Movie original_video, copy_video;
 PGraphics pg;
-Button blur_button, identity_button, sharpen_button, edge_detection_button, gaussian_blur_button, grayscale_button, luma_button, ascii_button;
+Button blur_button, identity_button, sharpen_button, edge_detection_button, gaussian_blur_button, grayscale_button, luma_button;
 
 float[] sharpenMask = {0.0, -1.0,  0.0,
                       -1.0,  5.0, -1.0,
@@ -28,15 +28,13 @@ float[] mask = identityMask;
                      
 String filter= "grayscale";
 
-boolean is_ascii= false;
 boolean is_filter = false;
 
-char[] ascii;
 
 PShader convolution, grayLuma, grayMean, shader;
 
 void setup() {
-  size(1030, 500, P2D);
+  size(1030, 350, P2D);
   frameRate(30);
   textSize(12);
   background(255);
@@ -44,57 +42,44 @@ void setup() {
   copy_video = new Movie(this,"homero.mov");
   original_video.loop();
   copy_video.loop();
-  pg = createGraphics(504,239, P2D);
-  
+  pg = createGraphics(copy_video.width,copy_video.height, P2D);
   convolution = loadShader("conv-frag.glsl");
   convolution.set("renderSize", float(copy_video.width), float(copy_video.height));
   grayLuma = loadShader("luma-frag.glsl");
   grayMean = loadShader("gray-mean-frag.glsl");
   
-  
-  identity_button = new Button("Identity", 10, 350, 100, 35);
-  blur_button = new Button("Blur", 120, 350, 110, 35);
-  sharpen_button = new Button("Sharpen", 240, 350, 100, 35);
-  edge_detection_button = new Button("Edge detection", 350, 350, 150, 35);
-  gaussian_blur_button = new Button("Gaussian blur", 510, 350, 150, 35);
-  grayscale_button = new Button("Grayscale", 10, 450, 100, 35);
-  luma_button = new Button("Luma", 120, 450, 100, 35);
-  ascii_button = new Button("Ascii", 230, 450, 100, 35);
-  fill(0);
-  stroke(0);
-  
+  identity_button = new Button("Identity", 10, 280, 100, 35);
+  blur_button = new Button("Blur", 120, 280, 110, 35);
+  sharpen_button = new Button("Sharpen", 240, 280, 100, 35);
+  edge_detection_button = new Button("Edge detection", 350, 280, 150, 35);
+  gaussian_blur_button = new Button("Gaussian blur", 510, 280, 150, 35);
+  grayscale_button = new Button("Grayscale", 670, 280, 100, 35);
+  luma_button = new Button("Luma", 780,280, 100, 35);
 }
 
 void draw() {
   background(255);
   resetShader();
   
-  convolution.set("mask", sharpenMask);
-  
   pg.beginDraw();
-  if(is_filter && filter != "ascii"){
+  if(is_filter){
     pg.shader(shader);
   }else{
-    //convolution.set("mask", mask);
     setMask(convolution, mask);
   }
-  
-  if(copy_video.available()){
-        copy_video.read();
-    }
-  pg.image(copy_video.get(), 0, 0);
+  pg.image(copy_video, 0, 0);
   pg.endDraw();
   image(pg, copy_video.width+5, 0); 
   image(original_video, 0, 0); 
+  
+  // Draw buttons
   blur_button.Draw();
   identity_button.Draw();
   sharpen_button.Draw();
   edge_detection_button.Draw();
   gaussian_blur_button.Draw();
   grayscale_button.Draw();
-  luma_button.Draw();
-  ascii_button.Draw();
-  
+  luma_button.Draw();  
 }
 
 void movieEvent(Movie m) {
@@ -133,11 +118,6 @@ void mousePressed()
     mask = gaussianBlurMask;
     shader = convolution;
     is_filter= false;
-  }
-  if (ascii_button.MouseIsOver()) {
-    is_filter= true; 
-    is_ascii = true;
-    filter= "ascii";
   }
   if (grayscale_button.MouseIsOver()) {
     shader = grayMean;

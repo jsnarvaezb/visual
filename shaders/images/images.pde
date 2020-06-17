@@ -8,7 +8,7 @@
 
 PImage img;
 PShader convolution, grayLuma, grayMean, shader;
-Button blur_button, identity_button, sharpen_button, edge_detection_button, gaussian_blur_button, grayscale_button, luma_button, ascii_button;
+Button blur_button, identity_button, sharpen_button, edge_detection_button, gaussian_blur_button, grayscale_button, luma_button;
 
 
 float[] sharpenMask = {0.0, -1.0,  0.0,
@@ -35,36 +35,29 @@ float[] mask = identityMask;
 
 String filter= "grayscale";
 
-boolean is_ascii= false;
 boolean is_filter = false;
    
 void setup() {
-  size(1082, 500, P2D);
+  size(1070, 390, P2D);
   img = loadImage("big_eyes.png");
   textSize(12);
   convolution = loadShader("conv-frag.glsl");
   convolution.set("renderSize", float(img.width), float(img.height));
   grayLuma = loadShader("luma-frag.glsl");
   grayMean = loadShader("gray-mean-frag.glsl");
-  identity_button = new Button("Identity", 10, 350, 100, 35);
-  blur_button = new Button("Blur", 120, 350, 110, 35);
-  sharpen_button = new Button("Sharpen", 240, 350, 100, 35);
-  edge_detection_button = new Button("Edge detection", 350, 350, 150, 35);
-  gaussian_blur_button = new Button("Gaussian blur", 510, 350, 150, 35);
-  grayscale_button = new Button("Grayscale", 10, 440, 100, 35);
-  luma_button = new Button("Luma", 120, 440, 100, 35);
-  ascii_button = new Button("Ascii", 230, 440, 100, 35);
-  fill(0);
-  stroke(0);
+  
+  identity_button = new Button("Identity", 10, 330, 100, 35);
+  blur_button = new Button("Blur", 120, 330, 110, 35);
+  sharpen_button = new Button("Sharpen", 240, 330, 100, 35);
+  edge_detection_button = new Button("Edge detection", 350, 330, 150, 35);
+  gaussian_blur_button = new Button("Gaussian blur", 510, 330, 150, 35);
+  grayscale_button = new Button("Grayscale", 670, 330, 100, 35);
+  luma_button = new Button("Luma", 780,330, 100, 35);
 }
 
 void draw() {
   background(255); 
   resetShader();
-  fill(0);
-  stroke(0);
-  text("Mask of convolution", 70 , 330);
-  text("Filters", 30, 420);
   
   blur_button.Draw();
   identity_button.Draw();
@@ -73,7 +66,6 @@ void draw() {
   gaussian_blur_button.Draw();
   grayscale_button.Draw();
   luma_button.Draw();
-  ascii_button.Draw();
   
   createShape(img, img.width, img.height, 0, 0);
   
@@ -128,11 +120,6 @@ void mousePressed()
     mask = gaussianBlurMask;
     shader = convolution;
     is_filter= false;
-  }
-  if (ascii_button.MouseIsOver()) {
-    is_filter= true; 
-    is_ascii = true;
-    filter= "ascii";
   }
   if (grayscale_button.MouseIsOver()) {
     shader = grayMean;

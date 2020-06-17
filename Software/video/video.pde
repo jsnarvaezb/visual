@@ -36,13 +36,13 @@ char[] ascii;
 void setup() {
   size(1030, 500);
   frameRate(30);
-  textSize(12);
-  background(255);
   original_video = new Movie(this,"homero.mov");
   copy_video = new Movie(this,"homero.mov");
   original_video.loop();
   copy_video.loop();
   pg = createGraphics(504,239);
+  
+  //Botones
   identity_button = new Button("Identity", 10, 350, 100, 35);
   blur_button = new Button("Blur", 120, 350, 110, 35);
   sharpen_button = new Button("Sharpen", 240, 350, 100, 35);
@@ -50,19 +50,27 @@ void setup() {
   gaussian_blur_button = new Button("Gaussian blur", 510, 350, 150, 35);
   grayscale_button = new Button("Grayscale", 10, 450, 100, 35);
   luma_button = new Button("Luma", 120, 450, 100, 35);
-  ascii_button = new Button("Ascii", 230, 450, 100, 35);
-  fill(0);
-  stroke(0);
-  
+  ascii_button = new Button("Ascii", 230, 450, 100, 35);  
 }
 
 void draw() {
-  //quad(0, 10, 50, 10, 50, 20, 0, 20);
   background(255);
+  textSize(12);
   text("Frame rate:", 480 , 280);
   text(frameRate, 550,280);
   text("Mask of convolution", 70 , 330);
   text("Filters", 30 , 430);
+  
+  //Draw buttons
+  blur_button.Draw();
+  identity_button.Draw();
+  sharpen_button.Draw();
+  edge_detection_button.Draw();
+  gaussian_blur_button.Draw();
+  grayscale_button.Draw();
+  luma_button.Draw();
+  ascii_button.Draw();
+  
   pg.beginDraw();
   pg.image(copy_video,0,0);
   pg.loadPixels();
@@ -73,20 +81,14 @@ void draw() {
   }
   pg.updatePixels();
   pg.endDraw();
+  
   if (is_filter && filter == "ascii"){
     fn_ascii();
   }else{ 
     image(pg,520,10);
   }
   image(original_video,6, 10);
-  blur_button.Draw();
-  identity_button.Draw();
-  sharpen_button.Draw();
-  edge_detection_button.Draw();
-  gaussian_blur_button.Draw();
-  grayscale_button.Draw();
-  luma_button.Draw();
-  ascii_button.Draw();
+
 }
 
 void movieEvent(Movie m) {
@@ -134,16 +136,15 @@ void filters(){
 
 
 void fn_ascii(){
-  int resolution = 7;
-  textSize(12); 
+  textSize(10); 
   ascii = new char[256];
   String letters = "@&%#*vi<>+=^;,:'. ";
   for (int i = 0; i < 256; i++) {
     int index = int(map(i, 0, 256, 0, letters.length()));
     ascii[i] = letters.charAt(index);
   }
-  for (int y = 5; y <original_video.height-5; y += resolution) {
-    for (int x = 5; x < original_video.width-5; x += resolution) {
+  for (int y = 5; y <original_video.height-5; y += 7) {
+    for (int x = 5; x < original_video.width-5; x += 7) {
       int index = (x + y * pg.width);
       float r = red(pg.pixels[index + 0]);
       float g = green(pg.pixels[index + 1]);

@@ -2,13 +2,20 @@
 
 ## Taller 1
 
-Taller de análisis de imágenes/video al implementar diferentes operaciones tanto por software como por hardware(shaders), realizado por Juan Sebastian Narvaez y Diego Felipe Rodriguez para la materia Computación visual 2020-1.
+Taller de análisis de imágenes/video al implementar diferentes operaciones tanto por software como por hardware(shaders).
 
-### Motivación y objetivo
+### Integrantes
 
-* Aplicar diferentes filtros y mascaras de convolución a imagenes y videos.
+* Juan Sebastian Narvaez
+* Diego Felipe Rodriguez
 
-* Analizar y comparar los resultados...
+### Motivación
+
+Hoy en día, el procesamiento de imágenes se encuentra entre las tecnologías de rápido crecimiento, pues varias compañías de tecnología, están apostándole a mejorar las fotografías que realizan sus dispositivos con distintas técnicas de procesamiento de imagen para lograr resultados como zoom digital, modo nocturno, modo retrato, calibración HDR, reducción de ruido, entre muchas otros.
+
+### Objetivo
+
+* Aplicar diferentes filtros y mascaras de convolución a imagenes y videos tanto por software como por hardware
 
 ### 1 Analisis por software
 
@@ -131,29 +138,33 @@ Y así obtenemos los siguientes resultados:
 
 ###### 1.1.1.3 Ascii
 
-Se recorren todos los pixeles de la imagen, y para cada uno se le asigna un caracter ascii dependiendo del promedio de brillantez que tenga. 
+Para lograr representar una imagen por ascci, es necesario recorrer todos sus pixeles, y para cada uno se le asigna un caracter ascii dependiendo del promedio de brillantez que tenga. 
 
 Este es el código que utilizamos para calcular y mostrar la imagen en ascii
 
 ```java
-int resolution = 7;
-  textSize(12); 
+  pg.beginDraw();
+  pg.image(copy_img,0,0);
+  pg.loadPixels();
+  textSize(6); 
   ascii = new char[256];
   String letters = "@&%#*vi<>+=^;,:'. ";
   for (int i = 0; i < 256; i++) {
     int index = int(map(i, 0, 256, 0, letters.length()));
     ascii[i] = letters.charAt(index);
   }
-  for (int y = 5; y <original_video.height-5; y += resolution) {
-    for (int x = 5; x < original_video.width-5; x += resolution) {
+  for (int y = 5; y <original_img.height-5; y += 4) {
+    for (int x = 5; x < original_img.width-5; x += 4) {
       int index = (x + y * pg.width);
       float r = red(pg.pixels[index + 0]);
       float g = green(pg.pixels[index + 1]);
       float b = blue(pg.pixels[index + 2]);
       float brig = (r+g+b)/3;
-      text(ascii[int(brig)], x+520, y+10);
+      text(ascii[int(brig)], x+545, y+10);
     }
   }
+  pg.updatePixels();
+  pg.endDraw();
 ```
 
 Y obtuvimos el siguiente resultado
@@ -217,7 +228,7 @@ float gray = (color.r + color.g + color.b) / 3.0;
 Para *luma-frag.glsl* se calculó a partir de la función dada por luma 601:
 
 ```glsl
-#define LUMA_VALUES vec3(0.2126, 0.7152, 0.0722)
+#define LUMA_VALUES vec3(0.2989, 0.5870, 0.1140)
 float lum = dot(color.rgb, LUMA_VALUES);
 ```
 Y al final se define el color del pixel actual como el resultado de la operación realizada anteriormente:
@@ -326,4 +337,9 @@ float x = float(int(vertTexCoord.x * tilesX))/tilesX;
 A pesar de ser una operación sencilla, si no es escrita de esta forma exacta, con los diferentes *casting* mostrados, no arroja resultado y no pixela la imagen como se espera. Se sospecha que debido a esto, ciertas operaciones no arrojan los resultados esperados y por ende, no se obtiene el valor deseado.
 
 ### Conclusiones
+
+
+
 * A raiz de la realización de este taller, durante el trabajo con shaders, es una buena práctica descomponer las operaciones en expresiones más sencillas para poder corregir los errores de una forma más localizada.
+
+
